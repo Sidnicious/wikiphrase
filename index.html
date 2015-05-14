@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width">
+<style>
+html {
+	font: 18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#word {
+	text-align: center;
+}
+
+#next {
+	font: inherit;
+	position: absolute;
+	box-sizing: border-box;
+	width: 100%;
+	top: 50%;
+	bottom: 0;
+	left: 0;
+	background: green;
+	color: white;
+	border: none;
+	margin: 0;
+}
+</style>
+<div id=word></div>
+<button id=next>Next</button>
+<script src=util.js></script>
+<script src=gamedata.js></script>
+<script>
+function Game() {
+	this.fillWords();
+}
+
+Game.prototype.fillWords = function() {
+	this.words = util.shuffle(Wikiphrase.words.slice());
+};
+
+Game.prototype.next = function() {
+	var word = this.words.shift();
+	if (word === undefined) {
+		this.fillWords();
+		return this.next();
+	}
+	return word;
+};
+
+var game = new Game;
+
+function nextWord(e) {
+	e.preventDefault();
+	word.textContent = game.next();
+}
+
+next.addEventListener('click', nextWord);
+next.addEventListener('touchstart', nextWord);
+</script>
